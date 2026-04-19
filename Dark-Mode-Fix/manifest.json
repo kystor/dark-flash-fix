@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "暗色模式防白屏闪烁",
+  "version": "1.0",
+  "description": "在网页加载初期强制注入深色背景，防止暗色模式下的白屏闪烁。",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
