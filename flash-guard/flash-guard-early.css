@@ -1,0 +1,12 @@
+/*
+ * flash-guard-early.css
+ *
+ * 【终极修复方案】：使用 :not(.__fg_loaded__) 伪类选择器。
+ * 意思是：只有当 <html> 标签【没有】 __fg_loaded__ 这个类名时，才应用这个深色背景。
+ * 当 content.js 发现页面加载完成，会给 <html> 加上这个类名，这段样式就会瞬间失效，
+ * 从而透出浏览器原本的默认纯白色。
+ */
+
+html:not(.__fg_loaded__) {
+  background-color: var(--fg-color, #111111) !important;
+}

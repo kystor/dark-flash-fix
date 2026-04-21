@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlashGuard 设置</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 300px;
+      background: #16161a;
+      color: #e0e0ec;
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 13px;
+      padding: 0 0 12px 0;
+      user-select: none;
+    }
+
+    /* ── 顶部标题栏 ── */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 12px; border-bottom: 1px solid #252530;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-icon {
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, #4a7cf6, #7c4df5);
+      border-radius: 7px; display: flex; align-items: center;
+      justify-content: center; font-size: 14px;
+    }
+    .logo-text { font-size: 14px; font-weight: 700; color: #f0f0f8; }
+    .logo-ver  { font-size: 10px; color: #444; margin-left: 4px; align-self: flex-end; margin-bottom: 1px; }
+    .master-toggle { display: flex; align-items: center; gap: 7px; }
+    .toggle-label  { font-size: 11px; color: #666; }
+
+    /* ── 通用 section ── */
+    .section { padding: 12px 16px 0; }
+    .section-title {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: #444; margin-bottom: 10px;
+    }
+
+    /* ── 设置行 ── */
+    .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .row-label { color: #aaa; font-size: 12.5px; }
+    .row-sub   { font-size: 11px; color: #444; margin-top: 2px; }
+    .divider   { height: 1px; background: #252530; margin: 4px 0 0; }
+
+    /* ── 开关 ── */
+    .toggle { position: relative; width: 34px; height: 19px; cursor: pointer; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track { position: absolute; inset: 0; background: #2e2e3c; border-radius: 20px; transition: background .22s; }
+    .toggle input:checked + .toggle-track { background: #4a7cf6; }
+    .toggle-thumb {
+      position: absolute; top: 2.5px; left: 2.5px;
+      width: 14px; height: 14px; background: #fff; border-radius: 50%;
+      transition: transform .22s; pointer-events: none;
+    }
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(15px); }
+
+    /* ── 颜色 & 滑块 ── */
+    .color-wrap { display: flex; align-items: center; gap: 7px; }
+    input[type="color"] { width: 30px; height: 30px; border: none; border-radius: 7px; padding: 2px; background: #222230; cursor: pointer; }
+    .color-hex { font-family: monospace; font-size: 11px; color: #666; }
+    .slider-wrap { display: flex; align-items: center; gap: 7px; }
+    input[type="range"] { -webkit-appearance: none; width: 96px; height: 3px; background: #2e2e3c; border-radius: 4px; outline: none; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px; background: #4a7cf6; border-radius: 50%; }
+    .slider-val { font-family: monospace; font-size: 11px; color: #666; min-width: 40px; text-align: right; }
+
+    /* ── 当前网站栏 ── */
+    .site-bar {
+      display: flex; align-items: center;
+      background: #1e1e28; border-radius: 8px; overflow: hidden; margin-bottom: 8px;
+    }
+    .site-favicon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; background: #252530; }
+    .site-info { flex: 1; padding: 0 8px; overflow: hidden; }
+    .site-host { font-size: 12px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .site-sub  { font-size: 10px; color: #444; margin-top: 1px; }
+    .wl-btn { flex-shrink: 0; padding: 0 11px; height: 28px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 0; outline: none; transition: background .18s, color .18s; }
+    .wl-btn.add    { background: #1a3a1a; color: #4caf70; }
+    .wl-btn.add:hover { background: #1f4a1f; }
+    .wl-btn.remove { background: #3a1a1a; color: #f06060; }
+    .wl-btn.remove:hover { background: #4a1f1f; }
+
+    /* ── 手动输入行 ── */
+    .wl-input-row {
+      display: flex; gap: 6px; margin-bottom: 8px;
+    }
+    .wl-input {
+      flex: 1; height: 28px;
+      background: #1e1e28; border: 1px solid #2e2e3c;
+      border-radius: 6px; padding: 0 8px;
+      color: #ccc; font-size: 12px; outline: none;
+      font-family: monospace;
+      transition: border-color .18s;
+      /* 允许用户选中文字 */
+      user-select: text;
+    }
+    .wl-input::placeholder { color: #383848; }
+    .wl-input:focus { border-color: #4a7cf6; }
+    .wl-input.error { border-color: #f06060; animation: shake .25s; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-4px); }
+      75%      { transform: translateX(4px); }
+    }
+    .wl-add-btn {
+      height: 28px; padding: 0 12px;
+      background: #1a2f4a; color: #4a9cf6;
+      border: 1px solid #1e3a5a; border-radius: 6px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: background .18s;
+      white-space: nowrap;
+    }
+    .wl-add-btn:hover { background: #1e3a5a; }
+
+    /* ── 白名单列表 ── */
+    .wl-list {
+      max-height: 130px; overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: #2e2e3c transparent;
+    }
+    .wl-empty { font-size: 11px; color: #2e2e3c; text-align: center; padding: 12px 0; }
+
+    .wl-item {
+      display: flex; align-items: center;
+      padding: 4px 0; border-bottom: 1px solid #1e1e28; gap: 4px;
+    }
+    .wl-item:last-child { border-bottom: none; }
+
+    /* 普通展示模式 */
+    .wl-item-host {
+      flex: 1; font-size: 12px; color: #888; font-family: monospace;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      cursor: pointer; padding: 2px 4px; border-radius: 4px;
+      transition: background .15s, color .15s;
+    }
+    .wl-item-host:hover { background: #1e1e28; color: #bbb; }
+
+    /* 编辑模式的输入框（替换 wl-item-host） */
+    .wl-item-input {
+      flex: 1; height: 24px;
+      background: #1e1e28; border: 1px solid #4a7cf6;
+      border-radius: 4px; padding: 0 6px;
+      color: #ccc; font-size: 12px; font-family: monospace; outline: none;
+      user-select: text;
+    }
+    .wl-item-input.error { border-color: #f06060; }
+
+    /* 编辑时的确认/取消按钮 */
+    .wl-confirm, .wl-cancel {
+      background: none; border: none; cursor: pointer;
+      font-size: 13px; line-height: 1; padding: 2px 3px;
+      border-radius: 3px; transition: color .15s, background .15s;
+      flex-shrink: 0;
+    }
+    .wl-confirm { color: #4caf70; }
+    .wl-confirm:hover { background: #1a3a1a; }
+    .wl-cancel  { color: #666; }
+    .wl-cancel:hover  { color: #f06060; background: #3a1a1a; }
+
+    /* 删除按钮（非编辑模式） */
+    .wl-edit {
+      background: none; border: none; cursor: pointer;
+      color: #2e2e3c; font-size: 12px; padding: 2px 3px; border-radius: 3px;
+      transition: color .15s, background .15s; flex-shrink: 0;
+    }
+    .wl-edit:hover { color: #4a7cf6; background: #1a2040; }
+    .wl-del {
+      background: none; border: none; cursor: pointer;
+      color: #2e2e3c; font-size: 15px; line-height: 1; padding: 0 3px;
+      transition: color .15s; flex-shrink: 0;
+    }
+    .wl-del:hover { color: #f06060; }
+
+    /* ── 保存提示 ── */
+    .toast {
+      margin: 10px 16px 0; padding: 7px 10px;
+      background: #0f2d1a; border: 1px solid #1a4a26;
+      border-radius: 6px; font-size: 11px; color: #4caf70;
+      text-align: center; opacity: 0; transition: opacity .25s;
+    }
+    .toast.show { opacity: 1; }
+
+    .main-body { transition: opacity .25s; }
+    .main-body.disabled { opacity: 0.3; pointer-events: none; }
+
+    /* 错误提示文字 */
+    .input-error-msg {
+      font-size: 10px; color: #f06060; margin-top: 3px;
+      min-height: 14px; padding-left: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🛡️</div>
+      <span class="logo-text">FlashGuard</span>
+      <span class="logo-ver">v1.2</span>
+    </div>
+    <div class="master-toggle">
+      <span class="toggle-label" id="master-label">启用</span>
+      <label class="toggle">
+        <input type="checkbox" id="enabled-toggle" />
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+  </div>
+
+  <div class="main-body" id="main-body">
+
+    <!-- 白名单 -->
+    <div class="section">
+      <div class="section-title">白名单</div>
+
+      <!-- 当前网站 -->
+      <div class="site-bar">
+        <div class="site-favicon" id="site-favicon">🌐</div>
+        <div class="site-info">
+          <div class="site-host" id="site-host">加载中…</div>
+          <div class="site-sub">当前标签页</div>
+        </div>
+        <button class="wl-btn add" id="wl-toggle-btn">+ 加入白名单</button>
+      </div>
+
+      <!-- 手动输入 -->
+      <div class="wl-input-row">
+        <input class="wl-input" id="wl-manual-input"
+          type="text" placeholder="手动输入域名，如 example.com"
+          spellcheck="false" autocomplete="off" />
+        <button class="wl-add-btn" id="wl-manual-add">添加</button>
+      </div>
+      <div class="input-error-msg" id="input-error"></div>
+
+      <!-- 列表 -->
+      <div class="wl-list" id="wl-list">
+        <div class="wl-empty">暂无白名单网站</div>
+      </div>
+    </div>
+
+    <div class="divider" style="margin: 10px 0 0;"></div>
+
+    <!-- 遮罩外观 -->
+    <div class="section">
+      <div class="section-title">遮罩外观</div>
+      <div class="row">
+        <div>
+          <div class="row-label">遮罩颜色</div>
+          <div class="row-sub">建议与系统暗色背景一致</div>
+        </div>
+        <div class="color-wrap">
+          <span class="color-hex" id="color-hex">#111111</span>
+          <input type="color" id="overlay-color" value="#111111" />
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 淡出效果 -->
+    <div class="section">
+      <div class="section-title">淡出效果</div>
+      <div class="row">
+        <div>
+          <div class="row-label">淡出时长</div>
+          <div class="row-sub">值越大过渡越慢</div>
+        </div>
+        <div class="slider-wrap">
+          <input type="range" id="fade-duration" min="100" max="1500" step="50" value="600" />
+          <span class="slider-val" id="duration-val">600ms</span>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="row-label">延迟开始</div>
+          <div class="row-sub">加载完后等多久开始淡出</div>
+        </div>
+        <div class="slider-wrap">
+          <input type="range" id="fade-delay" min="0" max="800" step="50" value="0" />
+          <span class="slider-val" id="delay-val">0ms</span>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:4px;">
+        <div>
+          <div class="row-label">切回标签页触发</div>
+          <div class="row-sub">切换回来时重新淡出一次</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="tab-fade-toggle" checked />
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">✓ 已保存</div>
+  <script src="popup.js"></script>
+</body>
+</html>
