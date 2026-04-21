@@ -1,0 +1,104 @@
+import os
+
+content = """# 🛡️ FlashGuard - 暗黑模式防白屏闪烁扩展
+
+一款轻量、强大且护眼的浏览器扩展，旨在彻底解决浏览器在暗黑模式下，网页加载或跳转时出现的瞬间“白屏闪烁”（White Flash）痛点。
+
+> **注意**：本项目包含两个版本。强烈推荐使用 `flash-guard` 核心版本，它是功能最完善、体验最丝滑的版本。旧版的 `Dark-Mode-Fix` 仅为简陋的基础版，功能不全，不推荐日常使用。
+
+---
+
+## ✨ 核心特性
+
+- ⚡ **瞬时拦截**：在浏览器解析网页前的第一毫秒注入深色底色，物理级别消灭刺眼的白光。
+- 📡 **雷达侦测**：实时监控 DOM 状态，确保网页内容真正加载出来后，遮罩才开始撤退。
+- 🎬 **丝滑过渡**：采用先进的“交叉溶解”技术，背景色渐变结合透明度淡出，视觉体验如丝般顺滑。
+- 👁️ **视力保护**：支持在切换回原有标签页时，自动触发一次柔和的色彩过渡，让眼睛慢慢适应光线变化。
+- ⚙️ **高度自定义**：提供直观的控制面板，您可以随心所欲地调整遮罩颜色、淡出速度、延迟时间，以及管理白名单。
+
+---
+
+## 🛠️ 安装步骤（新手详细指南）
+
+如果你是第一次安装浏览器扩展，请不用担心，只需跟着下面的步骤一步步操作即可：
+
+### 1. 下载与解压
+1. 点击项目主页的相关下载按钮，将项目代码压缩包下载到你的电脑上。
+2. 找到下载好的压缩包，将其**解压**到一个你平时**不会轻易移动或删除的固定文件夹**中（例如 `D:\\Software\\FlashGuard` 或 `我的文稿\\FlashGuard`）。
+   > ⚠️ **重要提示**：浏览器在运行本地开发版扩展时，会实时读取这个文件夹里的文件。如果你安装后把这个文件夹删除了，或者移动了位置，扩展就会失效！
+
+### 2. 进入浏览器的“扩展管理”页面
+打开你的浏览器，在最上方输入网址的地方输入以下对应地址，然后按下回车键（Enter）：
+- **Chrome 浏览器 (谷歌)**: `chrome://extensions/`
+- **Edge 浏览器 (微软)**: `edge://extensions/`
+
+### 3. 开启“开发者模式”
+在这个页面的角落，你需要开启允许加载本地扩展的权限：
+- **Chrome**: 找到页面右上角的 **“开发者模式”** 开关，点击将其打开。
+- **Edge**: 找到页面左侧边栏（或左下角）的 **“开发人员模式”** 开关，点击将其打开。
+
+### 4. 加载扩展程序
+1. 开启开发者模式后，页面左上方会出现几个新按钮。
+2. 点击 **“加载已解压的扩展程序”**（Chrome 浏览器）或 **“加载解压缩的扩展”**（Edge 浏览器）。
+3. 在弹出的文件夹选择窗口中，找到你刚才解压的目录，**选中里面名为 `flash-guard` 的文件夹**。
+4. 点击“选择文件夹”或“确定”。
+
+### 5. 验证是否安装成功
+- 此时，名为 **FlashGuard - 防闪白遮罩** 的扩展卡片应该已经出现在你的列表中了。
+- 你可以随便打开一个新的网页，或者在不同的网页标签之间切换，感受一下不再刺眼的丝滑加载效果！
+
+---
+
+## 🎛️ 如何使用与配置
+
+安装完成后，建议你将扩展图标固定在浏览器的右上角工具栏，点击图标即可打开设置面板：
+
+- **白名单管理**：如果你发现某个网页不需要防闪白（例如它本来就是纯白色的浅色网页），你可以点击面板上的“+ 加入白名单”，或者手动输入该网站的域名（如 `example.com`）将其排除。
+- **遮罩颜色**：默认是深黑色（`#111111`），你可以点击颜色块，挑选一个最适合你电脑系统主题的暗色。
+- **淡出效果**：
+  - **淡出时长**：控制遮罩消失的速度，数值越大消失得越慢（建议保留默认的 `600ms`）。
+  - **延迟开始**：网页内容加载完后，等待多久再开始变透明（适合那些加载极其缓慢的复杂网页，默认值为 0 即可）。
+- **切回标签页触发**：开启后，当你从别的网页切回当前网页时，也会有一个非常短暂的色彩渐变，用来保护眼睛适应屏幕光线。
+
+---
+
+## 👨‍💻 给想学习代码的新手：开发与调试说明
+
+如果你正在学习代码，想要自己修改里面的动画逻辑或者操作界面的外观，这里是如何将代码应用到软件中的方法：
+
+1. **修改代码**：使用代码编辑器（如 VS Code 甚至系统的记事本）打开 `flash-guard` 文件夹，修改里面的 `content.js`（控制核心动画）或 `popup.html`（控制面板外观）并保存文件。
+2. **应用到浏览器**：回到浏览器的扩展管理页面（`chrome://extensions/`）。
+3. **刷新扩展**：找到 FlashGuard 的卡片，点击右下角的 **“刷新” (🔄)** 图标，浏览器就会重新读取你修改后的文件，最新代码就立刻生效了！你可以尽情进行各种实验。
+
+---
+
+## 📄 开源许可证 (License)
+
+本项目采用 **MIT License** 开源许可证。这意味着你可以自由地学习、使用、修改和分发本项目的代码，只需在你的项目中保留这份原有的版权声明即可。
+
+
+代码输出
+File generated successfully.
+
+```text
+MIT License
+
+Copyright (c) 2024-Present
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
