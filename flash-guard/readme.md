@@ -1,5 +1,3 @@
-import os
-
 content = """# 🛡️ FlashGuard - 暗黑模式防白屏闪烁扩展
 
 一款轻量、强大且护眼的浏览器扩展，旨在彻底解决浏览器在暗黑模式下，网页加载或跳转时出现的瞬间“白屏闪烁”（White Flash）痛点。
@@ -77,28 +75,4 @@ content = """# 🛡️ FlashGuard - 暗黑模式防白屏闪烁扩展
 本项目采用 **MIT License** 开源许可证。这意味着你可以自由地学习、使用、修改和分发本项目的代码，只需在你的项目中保留这份原有的版权声明即可。
 
 
-代码输出
-File generated successfully.
 
-```text
-MIT License
-
-Copyright (c) 2024-Present
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
